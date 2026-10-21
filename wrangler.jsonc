@@ -1,0 +1,11 @@
+{
+  "name": "myot-site",
+  "compatibility_date": "2026-10-12",
+  // astro build の出力をそのまま配信する（_redirects も有効）
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  // Cloudflare の「Observability」でエラーログを見られるようにする
+  "observability": { "enabled": true }
+}

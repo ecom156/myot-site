@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const news = (await getCollection('news')).sort((a, b) => +b.data.date - +a.data.date);
+const fmt = (d: Date) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+---
+<Base title="お知らせ">
+  <div class="wrap">
+    <nav class="breadcrumb"><a href="/">HOME</a> » お知らせ</nav>
+    <h1>お知らせ</h1>
+    <ul class="news-list">
+      {news.map((n) => (
+        <li><span class="meta">{fmt(n.data.date)}</span> <a href={`/${n.data.path}/`}>{n.data.title}</a></li>
+      ))}
+    </ul>
+  </div>
+</Base>

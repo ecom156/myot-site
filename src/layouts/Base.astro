@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import { nav, CONTACT } from '../components/Nav';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const SITE = 'ECOMジュニア 英検グループクラス';
+const TAGLINE = '子供に英検®を1000人以上指導。17年の実績';
+const { title, description = `${SITE} – ${TAGLINE}` } = Astro.props;
+const fullTitle = title === SITE ? `${SITE} – ${TAGLINE}` : `${title} – ${SITE}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const current = decodeURI(Astro.url.pathname);
+const year = new Date().getFullYear();
+const logo = '/wp-content/uploads/2022/04/ECOM-jr250-100.png';
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/wp-content/uploads/2022/05/ecom-jr_C-150x150.png" sizes="32x32" />
+    <link rel="icon" href="/wp-content/uploads/2022/05/ecom-jr_C-300x300.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/wp-content/uploads/2022/05/ecom-jr_C-300x300.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta property="og:site_name" content={SITE} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/wp-content/uploads/2022/05/slider-eiken-group-2-1110x500.jpg', Astro.site)} />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZRSK9XK4M5"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ZRSK9XK4M5');
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="logo" href="/"><img src={logo} alt="ECOM Junior" width="250" height="100" /></a>
+        <details class="menu-toggle"><summary>メニュー</summary></details>
+        <ul class="nav">
+          {nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={current === item.href ? 'page' : undefined}>{item.label}</a>
+              {item.children && (
+                <ul class="sub">
+                  {item.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <ul>
+          {nav.flatMap((i) => [i, ...(i.children ?? [])]).filter((i, n, all) => all.findIndex((j) => j.href === i.href) === n).map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+          <li><a href="https://www.youtube.com/c/ecomenglish">YouTube</a></li>
+        </ul>
+        <div>© {year} ECOMジュニア 英検グループクラス – 運営 <a href="https://ecominc.co.jp/">株式会社イーコミュニケーション</a></div>
+      </div>
+    </footer>
+  </body>
+</html>
