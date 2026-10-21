@@ -18,3 +18,4 @@ npm run preview  # ビルドして wrangler dev で本番と同じ配信を確�
 ```
 
 Cloudflare の Worker（Git 接続）の設定は、ビルドコマンド `npm run build`、デプロイコマンド `npx wrangler deploy`。
+main への push で自動デプロイされるには、GitHub の Installed GitHub Apps →「Cloudflare Workers and Pages」の Repository access にこのリポジトリが含まれている必要があります。
