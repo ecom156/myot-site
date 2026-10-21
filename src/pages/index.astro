@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { CONTACT } from '../components/Nav';
+
+const news = (await getCollection('news')).sort((a, b) => +b.data.date - +a.data.date).slice(0, 5);
+---
+<Base title="ECOMジュニア 英検グループクラス">
+  <section class="hero">
+    <img src="/wp-content/uploads/2022/05/slider-eiken-group-2-1110x500.jpg" alt="" width="1110" height="500" />
+    <div class="hero-text">
+      <p class="hero-title">ECOMオンライン英検®講座</p>
+      <p>・子供専用　・グループクラスで切磋琢磨　・英検に精通した先生</p>
+      <a class="btn" href={CONTACT}>お問い合わせ</a>
+    </div>
+  </section>
+  <div class="wrap">
+    <div class="home">
+      <div class="prose">
+        <div class="notice">
+          <p>現在、10月の一次試験、11月の2次面接を想定した対策クラスを開講中。<br /><a href={CONTACT}>お問い合わせ</a>いただきますと、開講スタートのお知らせなどをご案内します。</p>
+        </div>
+        <p>受講したい英検対策講座を選んで、予約手続きをしてください。</p>
+        <p><b>いきなり『本講座』申込みが不安な方は、『無料講座』（受講環境確認兼）を経てからお進みください。<br />迷ったら、一次対策「語彙」または「英作文」対策講座からお入り下さい。</b></p>
+        <p class="cta"><a class="btn" href={CONTACT}>お問い合わせ</a> <a class="btn btn-sub" href="/service/">サービス紹介</a></p>
+        <h2>お知らせ</h2>
+        <ul class="news-list">
+          {news.map((n) => <li><a href={`/${n.data.path}/`}>{n.data.title}</a></li>)}
+        </ul>
+      </div>
+      <aside class="home-side">
+        <a href="/ecom英検対策グループクラス漫画/"><img src="/wp-content/uploads/2022/09/icon-eiken-mangaecom2-300x269.jpg" alt="ECOM英検漫画" width="300" height="269" /></a>
+        <a href="/online-classes/eiken/"><img src="/wp-content/uploads/2022/06/bannar-hiketsu-150x150.gif" alt="英検合格へのアドバイス 勉強法など" width="150" height="150" /></a>
+      </aside>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { CONTACT } from '../components/Nav';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  const news = await getCollection('news');
+  return [
+    ...pages.map((entry) => ({ params: { path: entry.data.path }, props: { entry, date: undefined } })),
+    ...news.map((entry) => ({ params: { path: entry.data.path }, props: { entry, date: entry.data.date } })),
+  ];
+}
+
+const { entry, date } = Astro.props;
+const fmt = (d: Date) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+---
+<Base title={entry.data.title} description={entry.data.description}>
+  <div class="wrap">
+    <nav class="breadcrumb">
+      <a href="/">HOME</a> »{date && <> <a href="/blog/">お知らせ</a> »</>} {entry.data.title}
+    </nav>
+    <h1>{entry.data.title}</h1>
+    {date && <p class="meta">{fmt(date)}</p>}
+    <div class="prose">
+      <Fragment set:html={entry.rendered?.html} />
+    </div>
+    <p class="cta"><a class="btn" href={CONTACT}>お問い合わせ</a></p>
+  </div>
+</Base>
